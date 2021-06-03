@@ -34,6 +34,11 @@ void render_color_buffer(void);
 void clear_color_buffer(uint32_t color);
 
 /**
+ *
+ */
+void draw_pixel(int x, int y, uint32_t color);
+
+/**
  * Draw a rectangle to the color buffer
  *
  * @param  xPos: x-coordinate of top-left position of rectangle
