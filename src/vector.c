@@ -27,3 +27,4 @@ vec3_t vec3_rotate_z(vec3_t v, float angle) {
 	};
 	return rotated_vector;
 }
+

@@ -5,6 +5,9 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#define FPS 30
+#define FRAME_TARGET_TIME (1000 / FPS)
+
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern uint32_t* color_buffer;
@@ -48,6 +51,22 @@ void draw_pixel(int x, int y, uint32_t color);
  * @param  color: color of rectangle
  */
 void draw_rect(int xPos, int yPos, int width, int height, uint32_t color);
+
+/**
+ * Draw a line to the color buffer using a DDA (digital differential analyzer) algorithm
+ *
+ * @param: x0 : starting point x value
+ * @param: y0 : starting point y value
+ * @param: x1 : ending point x value
+ * @param: x2 : ending point y value
+ * @param: color : color to draw line in
+ */
+void draw_line(int x0, int y0, int x1, int y1, uint32_t color);
+
+/**
+ * Draw triangle to the color buffer (calls draw_line)
+ */
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color);
 
 /**
  * Just a test function to draw a grid to the color buffer, will prob delete this
