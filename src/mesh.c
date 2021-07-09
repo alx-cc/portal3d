@@ -1,7 +1,15 @@
+#include <stdio.h>
 #include "mesh.h"
 #include "array.h"
 
 //GLOBAL VARIABLES
+
+mesh_t mesh = {
+	.vertices = NULL,
+	.faces = NULL,
+	.rotation = {0, 0, 0}
+};
+
 vec3_t cube_vertices[N_CUBE_VERTICES] = {
 	{ .x = -1, .y = -1, .z = -1 }, // 1
 	{ .x = -1, .y =  1, .z = -1 }, // 2
@@ -43,4 +51,5 @@ void load_cube_mesh_data(void) {
 		face_t cube_face = cube_faces[i];
 		array_push(mesh.faces, cube_face);
 	}
+}
 

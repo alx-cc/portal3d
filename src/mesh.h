@@ -22,5 +22,7 @@ typedef struct {
 
 extern mesh_t mesh; //our global mesh we'll use across the program
 
+void load_cube_mesh_data(void);
+
 #endif
 
