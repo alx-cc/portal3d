@@ -1,0 +1,12 @@
+A
+|\
+| \
+|  \
+|   \
+|    \
+|     \
+|______\
+B       C
+
+the cross product between the two vectors (B-A) and (C-A) gives us
+the resulting perpendicular vector (forming a 90 degree angle with triangle face in 3d)

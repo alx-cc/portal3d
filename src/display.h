@@ -8,6 +8,7 @@
 #define FPS 30
 #define FRAME_TARGET_TIME (1000 / FPS)
 
+
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern uint32_t* color_buffer;
@@ -75,6 +76,8 @@ void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t colo
  * @param  color2: color of background
  */
 void draw_grid(uint32_t color1, uint32_t color2);
+
+void draw_horizon();
 
 void destroy_window(void);
 #endif
