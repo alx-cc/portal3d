@@ -5,16 +5,29 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
-#define FPS 30
+#define FPS 60
 #define FRAME_TARGET_TIME (1000 / FPS)
 
+/**
+ * get window dimensions
+ */
+int get_window_width(void);
+int get_window_height(void);
 
-extern SDL_Window* window;
-extern SDL_Renderer* renderer;
-extern uint32_t* color_buffer;
-extern SDL_Texture* color_buffer_texture;
-extern int window_width;
-extern int window_height;
+/**
+ * set render method (textured, wireframe, solid)
+ */
+void set_render_method(void);
+
+/**
+ * enable or disable backface culling
+ */
+void set_cull_method(void);
+
+/**
+ * check if backface culling is enabled
+ */
+bool is_cull_backface(void);
 
 /**
  * Initialize SDL, initialize/configure the window we will be using
@@ -36,6 +49,8 @@ void render_color_buffer(void);
  * @param  color: color value to clear individual pixels with
  */
 void clear_color_buffer(uint32_t color);
+
+void clear_z_buffer(void);
 
 /**
  *
@@ -63,11 +78,6 @@ void draw_rect(int xPos, int yPos, int width, int height, uint32_t color);
  * @param: color : color to draw line in
  */
 void draw_line(int x0, int y0, int x1, int y1, uint32_t color);
-
-/**
- * Draw triangle to the color buffer (calls draw_line)
- */
-void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color);
 
 /**
  * Just a test function to draw a grid to the color buffer, will prob delete this

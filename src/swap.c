@@ -7,7 +7,7 @@ void int_swap(int* a, int* b) {
 }
 
 void float_swap(float* a, float* b) {
-    int tmp = *a;
+    float tmp = *a;
     *a = *b;
     *b = tmp;
 }

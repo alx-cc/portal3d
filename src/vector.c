@@ -2,6 +2,14 @@
 #include "vector.h"
 
 /**
+* Create a new 2D vector
+*/
+vec2_t vec2_new(float x, float y) {
+    vec2_t result = { x, y };
+    return result;
+}
+
+/**
 * Get the sum of two 2D vectors
 */
 vec2_t vec2_add(vec2_t a, vec2_t b) {
@@ -60,6 +68,23 @@ void vec2_normalize(vec2_t* v) {
     v->x /= length;
     v->y /= length;
 }
+
+/**
+* Create a new 3D vector
+*/
+vec3_t vec3_new(float x, float y, float z) {
+    vec3_t result = { x, y, z };
+    return result;
+}
+
+/**
+* Return a duplicate of the 3D vector passed in (needed for triangle->polygon conversion in clipping.c)
+*/
+vec3_t vec3_clone(vec3_t* v) {
+    vec3_t result = { v->x, v->y, v->z };
+    return result;
+}
+
 /**
 * Get the sum of two 3D vectors
 */
@@ -174,15 +199,26 @@ vec3_t vec3_rotate_z(vec3_t v, float angle) {
 // VECTOR CONVERSION FUNCTIONS
 
 /**
-* COnvert a 3D vector into a 4D vector (with normalized 4th component)
+* Convert a 3D vector into a 4D vector (with normalized 4th component)
 */
 vec4_t vec4_from_vec3(vec3_t v) {
     vec4_t result = { v.x, v.y, v.z, 1.0 };
     return result;
 }
 
+/**
+* Convert a 4D vector into a 3D vector
+*/
 vec3_t vec3_from_vec4(vec4_t v) {
     vec3_t result = { v.x, v.y, v.z };
+    return result;
+}
+
+/**
+* Convert a 4d  vector into a 2D vector
+*/
+vec2_t vec2_from_vec4(vec4_t v) {
+    vec2_t result = { v.x, v.y };
     return result;
 }
 
