@@ -1,10 +1,17 @@
 #include <stdint.h>
 #include "light.h"
 
-light_t light = {
-    .direction = { 0, 0, 1 }
-};
+static light_t light;
 
+// initialize a light struct from main.c
+void init_light(vec3_t direction) {
+    light.direction = direction;
+}
+
+// get light direction from main.c
+vec3_t get_light_direction(void) {
+    return light.direction;
+}
 // Change color based on percentage factor (alignment with light) to represent light intensity
 uint32_t light_apply_intensity(uint32_t original_color, float percentage_factor) {
     if (percentage_factor < 0) percentage_factor = 0;
@@ -19,4 +26,3 @@ uint32_t light_apply_intensity(uint32_t original_color, float percentage_factor)
 
     return new_color;
 }
-

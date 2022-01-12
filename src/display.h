@@ -5,8 +5,22 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
-#define FPS 60
+#define FPS 120
 #define FRAME_TARGET_TIME (1000 / FPS)
+
+enum cull_method {
+    CULL_NONE,
+    CULL_BACKFACE
+};
+
+enum render_method {
+    RENDER_WIRE,
+    RENDER_WIRE_VERTEX,
+    RENDER_FILL_TRIANGLE,
+    RENDER_FILL_TRIANGLE_WIRE,
+    RENDER_TEXTURED,
+    RENDER_TEXTURED_WIRE
+};
 
 /**
  * get window dimensions
@@ -17,12 +31,12 @@ int get_window_height(void);
 /**
  * set render method (textured, wireframe, solid)
  */
-void set_render_method(void);
+void set_render_method(int method);
 
 /**
  * enable or disable backface culling
  */
-void set_cull_method(void);
+void set_cull_method(int method);
 
 /**
  * check if backface culling is enabled
@@ -51,6 +65,9 @@ void render_color_buffer(void);
 void clear_color_buffer(uint32_t color);
 
 void clear_z_buffer(void);
+
+float get_zbuffer_at(int x, int y);
+void set_zbuffer_at(int x, int y, float value);
 
 /**
  *
@@ -89,6 +106,10 @@ void draw_grid(uint32_t color1, uint32_t color2);
 
 void draw_horizon();
 
+bool should_render_filled_triangles(void);
+bool should_render_textured_triangles(void);
+bool should_render_wireframe(void);
+bool should_render_wire_vertex(void);
+
 void destroy_window(void);
 #endif
-

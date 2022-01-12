@@ -4,28 +4,24 @@
 //USER-DEFINED INCLUDES
 #include "vector.h"
 #include "triangle.h"
-
-
-//GLOBAL VARIABLES
-#define N_CUBE_VERTICES 8
-#define N_CUBE_FACES (6 * 2) //6 cube faces, 2 triangles per face
-
-extern face_t cube_faces[N_CUBE_FACES];
-extern vec3_t cube_vertices[N_CUBE_VERTICES];
+#include "upng.h"
 
 //define a struct for dynamically sized meshes with arrays of faces and vertices
 typedef struct {
-	vec3_t* vertices; //dynamic array of vertices
-	face_t* faces; //dynamic array of faces
-	vec3_t rotation; // rotation with x, y, and z values
-    vec3_t scale; // scale with x, y and z values
+	vec3_t* vertices; 		// dynamic array of vertices
+	face_t* faces; 				// dynamic array of faces
+	upng_t* texture; 			// pointer to mesh PNG texture
+	vec3_t rotation; 			// rotation with x, y, and z values
+    vec3_t scale; 			// scale with x, y and z values
     vec3_t translation; // translate with x, y and z values
 } mesh_t;
 
-extern mesh_t mesh; //our global mesh we'll use across the program
+void load_mesh(char* obj_filename, char* png_filename, vec3_t scale, vec3_t translation, vec3_t rotation);
+void load_mesh_obj_data(mesh_t* mesh, char* obj_filename);
+void load_mesh_png_data(mesh_t* mesh, char* png_filename);
 
-void load_cube_mesh_data(void);
-void load_obj_file_data(char* filename);
+int get_num_meshes(void);
+mesh_t* get_mesh(int index);
 
+void free_meshes(void);
 #endif
-
