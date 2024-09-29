@@ -4,7 +4,7 @@ A "fully functional" 3D renderer written in C
 
 ![Demo](./assets/portal3d.gif)
 
-## Extremely complicated build Instructions
+## Extremely Complicated Build Instructions:
 
 ```bash
 make
