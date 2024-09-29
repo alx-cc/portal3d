@@ -1,4 +1,4 @@
-# portal3d
+# Portal3d
 
 A "fully functional" 3D renderer written in C
 
