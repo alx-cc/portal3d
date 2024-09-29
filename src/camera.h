@@ -1,15 +1,15 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "vector.h"
 #include "matrix.h"
+#include "vector.h"
 
 typedef struct {
-    vec3_t position;
-    vec3_t direction;
-    vec3_t fwd_velocity;
-    float yaw_angle;
-    float pitch_angle;
+  vec3_t position;
+  vec3_t direction;
+  vec3_t fwd_velocity;
+  float yaw_angle;
+  float pitch_angle;
 } camera_t;
 
 void init_camera(vec3_t position, vec3_t direction);

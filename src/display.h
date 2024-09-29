@@ -1,25 +1,22 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include <stdint.h>
-#include <stdbool.h>
 #include <SDL2/SDL.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 #define FPS 120
 #define FRAME_TARGET_TIME (1000 / FPS)
 
-enum cull_method {
-    CULL_NONE,
-    CULL_BACKFACE
-};
+enum cull_method { CULL_NONE, CULL_BACKFACE };
 
 enum render_method {
-    RENDER_WIRE,
-    RENDER_WIRE_VERTEX,
-    RENDER_FILL_TRIANGLE,
-    RENDER_FILL_TRIANGLE_WIRE,
-    RENDER_TEXTURED,
-    RENDER_TEXTURED_WIRE
+  RENDER_WIRE,
+  RENDER_WIRE_VERTEX,
+  RENDER_FILL_TRIANGLE,
+  RENDER_FILL_TRIANGLE_WIRE,
+  RENDER_TEXTURED,
+  RENDER_TEXTURED_WIRE
 };
 
 /**
@@ -86,7 +83,8 @@ void draw_pixel(int x, int y, uint32_t color);
 void draw_rect(int xPos, int yPos, int width, int height, uint32_t color);
 
 /**
- * Draw a line to the color buffer using a DDA (digital differential analyzer) algorithm
+ * Draw a line to the color buffer using a DDA (digital differential analyzer)
+ * algorithm
  *
  * @param: x0 : starting point x value
  * @param: y0 : starting point y value
@@ -97,7 +95,8 @@ void draw_rect(int xPos, int yPos, int width, int height, uint32_t color);
 void draw_line(int x0, int y0, int x1, int y1, uint32_t color);
 
 /**
- * Just a test function to draw a grid to the color buffer, will prob delete this
+ * Just a test function to draw a grid to the color buffer, will prob delete
+ * this
  *
  * @param  color1: color of grid border
  * @param  color2: color of background
