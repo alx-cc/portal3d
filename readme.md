@@ -4,12 +4,25 @@ A "full featured" 3D renderer written in C
 
 ![Demo](./assets/portal3d.gif)
 
-## Extremely Complicated Build Instructions:
-
+## Installation and Usage:
+### Dependencies:
+SDL version 2 and a C compiler. This project was written in and tested using gcc only.
+### Build and Run:
 ```bash
 make
-./renderer
+make run
 ```
-## Dependencies:
-- Some C compiler (tested with gcc only)
-- SDL 2
+### Usage:
+WASD keys to move, E and Q to look up or down, arrow keys to move up or down
+
+
+Number keys change the render type:
+- 1 - Wireframe
+- 2 - Vertices
+- 3 - Triangles
+- 4 - Triangles + Wireframe
+- 5 - Textures
+- 6 - Textures + Wireframe
+
+7 and 8 enable and disable backface culling
+
