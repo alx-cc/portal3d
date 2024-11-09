@@ -1,40 +1,76 @@
 #include "array.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 
-#define ARRAY_RAW_DATA(array) ((int *)(array)-2)
-#define ARRAY_CAPACITY(array) (ARRAY_RAW_DATA(array)[0])
-#define ARRAY_OCCUPIED(array) (ARRAY_RAW_DATA(array)[1])
+typedef struct {
+    int capacity;  // Total allocated slots for elements
+    int size;      // Current number of elements in the array
+    char data[];   // Flexible array member for the actual data
+} ArrayHeader;
 
+// Internal function to get the data pointer
+void *get_data_pointer(ArrayHeader *header) {
+    return header ? header->data : NULL;
+}
+
+// Ensure array can hold `count` more items, resizing if necessary
 void *array_hold(void *array, int count, int item_size) {
-  if (array == NULL) {
-    int raw_size = (sizeof(int) * 2) + (item_size * count);
-    int *base = (int *)malloc(raw_size);
-    base[0] = count; // capacity
-    base[1] = count; // occupied
-    return base + 2;
-  } else if (ARRAY_OCCUPIED(array) + count <= ARRAY_CAPACITY(array)) {
-    ARRAY_OCCUPIED(array) += count;
-    return array;
-  } else {
-    int needed_size = ARRAY_OCCUPIED(array) + count;
-    int float_curr = ARRAY_CAPACITY(array) * 2;
-    int capacity = needed_size > float_curr ? needed_size : float_curr;
-    int occupied = needed_size;
-    int raw_size = sizeof(int) * 2 + item_size * capacity;
-    int *base = (int *)realloc(ARRAY_RAW_DATA(array), raw_size);
-    base[0] = capacity;
-    base[1] = occupied;
-    return base + 2;
-  }
+    ArrayHeader *header;
+	if (array == NULL) {
+	    header = NULL;
+	} else {
+	    // If the array exists, calculate the header pointer from the array pointer
+	    header = (ArrayHeader *)((char *)array - offsetof(ArrayHeader, data));
+	}
+
+	int required_size = ((header != NULL) ? header->size + count : count);
+
+
+    if (header == NULL) {
+        // Allocate initial memory for a new array
+        int initial_capacity = count > 4 ? count : 4;  // Minimum initial capacity
+        int raw_size = sizeof(ArrayHeader) + (item_size * initial_capacity);
+        header = (ArrayHeader *)malloc(raw_size);
+        header->capacity = initial_capacity;
+        header->size = count;
+        return get_data_pointer(header);
+    }
+
+    if (required_size <= header->capacity) {
+        // No resizing needed; just increase the size
+        header->size += count;
+        return get_data_pointer(header);
+    }
+
+    // Resize array if needed
+    int new_capacity = header->capacity * 2;
+    if (required_size > new_capacity) {
+        new_capacity = required_size;
+    }
+
+    int raw_size = sizeof(ArrayHeader) + (item_size * new_capacity);
+    header = (ArrayHeader *)realloc(header, raw_size);
+    header->capacity = new_capacity;
+    header->size = required_size;
+
+    return get_data_pointer(header);
 }
 
+// Return the number of items in the array
 int array_length(void *array) {
-  return (array != NULL) ? ARRAY_OCCUPIED(array) : 0;
+    if (array == NULL) {
+        return 0;
+    }
+    ArrayHeader *header = (ArrayHeader *)((char *)array - offsetof(ArrayHeader, data));
+    return header->size;
 }
 
+// Free array memory
 void array_free(void *array) {
-  if (array != NULL) {
-    free(ARRAY_RAW_DATA(array));
-  }
+    if (array != NULL) {
+        ArrayHeader *header = (ArrayHeader *)((char *)array - offsetof(ArrayHeader, data));
+        free(header);
+    }
 }
+
