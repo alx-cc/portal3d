@@ -13,7 +13,7 @@ make
 make run
 ```
 ### Usage:
-WASD keys to move, E and Q to look up or down, arrow keys to move up or down
+WASD keys to move, arrow keys to look up or down, space and shift to move up or down
 
 
 Number keys change the render type:
