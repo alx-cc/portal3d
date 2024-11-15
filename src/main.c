@@ -15,6 +15,15 @@
 #include <stdio.h>
 
 bool is_running = false;
+bool is_moving_forward = false;
+bool is_moving_backward = false;
+bool is_rotating_left = false;
+bool is_rotating_right = false;
+bool is_facing_up = false;
+bool is_facing_down = false;
+bool is_floating_up = false;
+bool is_floating_down = false;
+
 int previous_frame_time = 0;	
 float delta_time = 0;
 int grid_bg;
@@ -65,110 +74,93 @@ void setup(void) {
  * Read events from keyboard
  */
 void process_input(void) {
-  // initialize event and pollevent objects needed to read events
-  SDL_Event event;
-  while (SDL_PollEvent(&event)) {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        case SDL_QUIT:
+            is_running = false;
+            break;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym) {
+		    
+            // Movement controls
+            case SDLK_w: is_moving_forward = true; break;
+            case SDLK_s: is_moving_backward = true; break;
+            case SDLK_a: is_rotating_left = true; break;
+            case SDLK_d: is_rotating_right = true; break;
+	    case SDLK_UP: is_facing_up = true; break; 
+	    case SDLK_DOWN: is_facing_down = true; break; 
+	    case SDLK_SPACE: is_floating_up = true; break;
+	    case SDLK_LSHIFT: is_floating_down = true; break;
 
-    // poll for SDL_QUIT (x button) and escape
-    // close program if received
-    switch (event.type) {
-    case SDL_QUIT:
-      is_running = false;
-      break;
-    case SDL_KEYDOWN:
-      // Close if ESC is pressed
-      if (event.key.keysym.sym == SDLK_ESCAPE) {
-        is_running = false;
-        break;
-      }
-      // If 1 is pressed, set render method to wire
-      if (event.key.keysym.sym == SDLK_1) {
-        set_render_method(RENDER_WIRE);
-        break;
-      }
-      // If 2 is pressed, set render method to vertices
-      if (event.key.keysym.sym == SDLK_2) {
-        set_render_method(RENDER_WIRE_VERTEX);
-        break;
-      }
-      // If 3 is pressed, set render method to triangles
-      if (event.key.keysym.sym == SDLK_3) {
-        set_render_method(RENDER_FILL_TRIANGLE);
-        break;
-      }
-      // If 4 is pressed, set render method to triangles+wire
-      if (event.key.keysym.sym == SDLK_4) {
-        set_render_method(RENDER_FILL_TRIANGLE_WIRE);
-        break;
-      }
-      // If 5 is pressed, set render method to textured
-      if (event.key.keysym.sym == SDLK_5) {
-        set_render_method(RENDER_TEXTURED);
-        break;
-      }
-      // If 6 is pressed, set render method to textured+wire
-      if (event.key.keysym.sym == SDLK_6) {
-        set_render_method(RENDER_TEXTURED_WIRE);
-        break;
-      }
-      // If 7 is pressed, enable backface culling
-      if (event.key.keysym.sym == SDLK_7) {
-        set_cull_method(CULL_BACKFACE);
-        break;
-      }
-      // If 8 is pressed, disable backface culling
-      if (event.key.keysym.sym == SDLK_8) {
-        set_cull_method(CULL_NONE);
-        break;
-      }
-      // up arrow: float upward
-      if (event.key.keysym.sym == SDLK_UP) {
-        move_camera_y(3.0 * delta_time);
-        break;
-      }
-      // down arrow: float downward
-      if (event.key.keysym.sym == SDLK_DOWN) {
-        move_camera_y(-3.0 * delta_time);
-        break;
-      }
-      // 'a' key: strafe left
-      if (event.key.keysym.sym == SDLK_a) {
-        rotate_camera_z(-1.0 * delta_time);
-        break;
-      }
-      // 'd' key: strafe right
-      if (event.key.keysym.sym == SDLK_d) {
-        rotate_camera_z(1.0 * delta_time);
-        break;
-      }
-      // 'e' key: look up
-      if (event.key.keysym.sym == SDLK_e) {
-        rotate_camera_x(1.0 * delta_time);
-        break;
-      }
-      // 'q' key: look down
-      if (event.key.keysym.sym == SDLK_q) {
-        rotate_camera_x(-1.0 * delta_time);
-        break;
-      }
-      // 'w' key: move fwd
-      if (event.key.keysym.sym == SDLK_w) {
-        set_camera_fwd_vel(vec3_mul(get_camera_direction(), 5.0 * delta_time));
-        set_camera_position(
-            vec3_add(get_camera_position(), get_camera_fwd_vel()));
-        break;
-      }
-      // 's' key: move back
-      if (event.key.keysym.sym == SDLK_s) {
-        set_camera_fwd_vel(vec3_mul(get_camera_direction(), 5.0 * delta_time));
-        set_camera_position(
-            vec3_sub(get_camera_position(), get_camera_fwd_vel()));
-        break;
-      }
-      break;
+            // Render methods
+            case SDLK_1: set_render_method(RENDER_WIRE); break;
+            case SDLK_2: set_render_method(RENDER_WIRE_VERTEX); break;
+            case SDLK_3: set_render_method(RENDER_FILL_TRIANGLE); break;
+            case SDLK_4: set_render_method(RENDER_FILL_TRIANGLE_WIRE); break;
+            case SDLK_5: set_render_method(RENDER_TEXTURED); break;
+            case SDLK_6: set_render_method(RENDER_TEXTURED_WIRE); break;
+
+            // Backface culling toggles
+            case SDLK_7: set_cull_method(CULL_BACKFACE); break;
+            case SDLK_8: set_cull_method(CULL_NONE); break;
+
+            // Quit
+            case SDLK_ESCAPE:
+                is_running = false;
+                break;
+            }
+            break;
+
+        case SDL_KEYUP:
+            switch (event.key.keysym.sym) {
+            // Stop movement
+            case SDLK_w: is_moving_forward = false; break;
+            case SDLK_s: is_moving_backward = false; break;
+            case SDLK_a: is_rotating_left = false; break;
+            case SDLK_d: is_rotating_right = false; break;
+	    case SDLK_UP: is_facing_up = false; break; 
+	    case SDLK_DOWN: is_facing_down = false; break;
+	    case SDLK_SPACE: is_floating_up = false; break;
+	    case SDLK_LSHIFT: is_floating_down = false; break;
+
+            }
+            break;
+        }
     }
-  }
 }
+
+
+void update_camera(float delta_time) {
+    if (is_moving_forward) {
+        vec3_t forward = vec3_mul(get_camera_direction(), 5.0 * delta_time);
+        set_camera_position(vec3_add(get_camera_position(), forward));
+    }
+    if (is_moving_backward) {
+        vec3_t backward = vec3_mul(get_camera_direction(), 5.0 * delta_time);
+        set_camera_position(vec3_sub(get_camera_position(), backward));
+    }
+    if (is_rotating_left) {
+        rotate_camera_z(-1.0 * delta_time);
+    }
+    if (is_rotating_right) {
+        rotate_camera_z(1.0 * delta_time);
+    }
+    if (is_facing_up) {
+        rotate_camera_x(1.0 * delta_time);
+    }
+    if (is_facing_down) {
+        rotate_camera_x(-1.0 * delta_time);
+    }
+    if (is_floating_up) {
+        move_camera_y(3.0 * delta_time);
+    }
+    if (is_floating_down) {
+        move_camera_y(-3.0 * delta_time);
+    }
+}
+
+
 
 void update(void) {
   // block program until we have reached the millisecond duration we designated
@@ -181,17 +173,13 @@ void update(void) {
 
   delta_time = (SDL_GetTicks() - previous_frame_time) / 1000.0;
 
+// Update the camera position and orientation based on input
+    update_camera(delta_time);
+
   // calculate how many ms have passed since last frame
   previous_frame_time =
       SDL_GetTicks(); // how many ms have passed since SDL_init()
 
-  if (previous_frame_time % 5 == 0) {
-    grid_bg = 0xFF000000;
-    grid_fg = 0x00090002;
-  } else {
-    grid_bg = 0xFF111111;
-    grid_fg = 0x00000100;
-  }
 
   // Initialize counter of triangles to render for the current frame
   num_triangles_to_render = 0;
